@@ -1,0 +1,17 @@
+[Unit]
+Description=Сайт Топком
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/topkom/TKVV/V.2/topkom
+Environment=NODE_ENV=production
+Environment=PORT=3100
+Environment=HOST=127.0.0.1
+EnvironmentFile=-/opt/topkom/TKVV/V.2/topkom/.env
+ExecStart=/usr/local/node-v22/bin/node dist/index.js
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

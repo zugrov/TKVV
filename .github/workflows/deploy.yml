@@ -24,8 +24,29 @@ jobs:
       - name: Build
         run: npm run build
 
+  test-v2:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: V.2/topkom
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Enable pnpm
+        run: corepack enable && corepack prepare pnpm@10.18.0 --activate
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Test
+        run: pnpm test
+      - name: Build
+        run: pnpm build
+
   deploy:
-    needs: test
+    needs: [test, test-v2]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
